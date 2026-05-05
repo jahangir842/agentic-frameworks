@@ -1,0 +1,10 @@
+1.  **Mahnoor Maalik** - MS Avionics - 3.9 - CAE, NUST, RISALPUR
+2.  **Aaqib Israr** - Masters in Computer Science - 3.77 - Northern University Nowshera
+3.  **Nooh Ayub** - M.S. in Robotics - 4.0 - NUST
+4.  **Muhammad Faizan Faiz** - MS Robotics - 3.35 - SMME, NUST
+5.  **Nofal Elahi** - M.S. Electrical Engineering - 3.73 - Information Technology University
+6.  **Sibtain Syed** - Masters in Computer Science - 3.36 - Comsats University Islamabad
+7.  **Usman Zahid** - M.S. Computer Engineering - 3.97 - HITEC University
+8.  **Nimra Bari** - PhD Computer Science - 3.33 - GIKI
+9. **Noor Ul Ain** - MS Electrical Engineering - 3.22 - COMSATS University Islamabad
+10. **Muhammad Ali** - MS in Software Engineering - 3.21 - Military College of Signals

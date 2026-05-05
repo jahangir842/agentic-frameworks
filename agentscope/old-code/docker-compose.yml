@@ -1,0 +1,53 @@
+services:
+  vllm-server:
+    image: vllm/vllm-openai:v0.8.0
+    container_name: vllm-server
+    ports:
+      - "8080:8000"
+    environment:
+      - HUGGING_FACE_HUB_TOKEN=${HF_TOKEN}
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+      - ./models:/app/local_model
+    command: >
+      --model /app/local_model/3.1-8b-instruct
+      --max-model-len 16524
+      --enable-auto-tool-choice 
+      --tool-call-parser hermes
+# --enable-auto-tool-choice     >>>>   Allows the AI model to autonomously decide when to use available tools
+# --tool-call-parser hermes     >>>>   Instructs the server to extract the AI's tool requests using the Hermes formatting standard
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    ipc: host
+
+  blackbox-exporter:
+    image: prom/blackbox-exporter:latest
+    container_name: blackbox-exporter
+    ports:
+      - "9115:9115"
+    command:
+      - '--config.file=/etc/blackbox_exporter/config.yml'
+    volumes:
+      - ./blackbox-config.yml:/etc/blackbox_exporter/config.yml:ro
+
+  # 🎮 NVIDIA DCGM Exporter for GPU metrics
+  dcgm-exporter:
+    image: nvcr.io/nvidia/k8s/dcgm-exporter:4.4.1-4.6.0-ubuntu22.04
+    container_name: dcgm-exporter
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    cap_add:
+      - SYS_ADMIN
+    ports:
+      - "9400:9400"
+    restart: unless-stopped

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgentScope Hiring Assistant</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .chat-container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .chat-box {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #fafafa;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            line-height: 1.5;
+            font-size: 0.95rem;
+            word-wrap: break-word;
+        }
+
+        /* User Message Styling */
+        .user-message {
+            align-self: flex-end;
+            background-color: #3498db;
+            color: white;
+            border-bottom-right-radius: 2px;
+        }
+
+        /* Agent Message Styling */
+        .agent-message {
+            align-self: flex-start;
+            background-color: #e8eaed;
+            color: #333;
+            border-bottom-left-radius: 2px;
+            white-space: pre-wrap; /* Keeps line breaks from the Python output */
+        }
+
+        .input-area {
+            display: flex;
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #eee;
+            gap: 10px;
+        }
+
+        #user-input {
+            flex: 1;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        #user-input:focus {
+            border-color: #3498db;
+        }
+
+        button {
+            padding: 0 25px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            font-style: italic;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            align-self: flex-start;
+            display: none; /* Hidden by default */
+        }
+    </style>
+</head>
+<body>
+
+<div class="chat-container">
+    <div class="chat-header">
+        🤖 Chat Agent
+    </div>
+    
+    <div class="chat-box" id="chat-box">
+    <div class="message agent-message">Hi! How can I assist with your Company Analytics?</div>
+    </div>
+    
+    <div class="loading" id="loading-indicator">Thinking and using tools...</div>
+
+    <div class="input-area">
+        <input type="text" id="user-input" placeholder="e.g., Who is the best Python dev and what is their monthly pay?" onkeypress="handleKeyPress(event)">
+        <button id="send-btn" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<script>
+    const chatBox = document.getElementById('chat-box');
+    const userInput = document.getElementById('user-input');
+    const sendBtn = document.getElementById('send-btn');
+    const loadingIndicator = document.getElementById('loading-indicator');
+
+    function appendMessage(sender, text) {
+        const msgDiv = document.createElement('div');
+        msgDiv.classList.add('message');
+        
+        if (sender === 'user') {
+            msgDiv.classList.add('user-message');
+        } else {
+            msgDiv.classList.add('agent-message');
+        }
+        
+        msgDiv.textContent = text;
+        chatBox.appendChild(msgDiv);
+        
+        // Auto-scroll to the bottom
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    async function sendMessage() {
+        const query = userInput.value.trim();
+        if (!query) return;
+
+        // 1. Show user message
+        appendMessage('user', query);
+        
+        // 2. Clear input and disable UI while waiting
+        userInput.value = '';
+        sendBtn.disabled = true;
+        userInput.disabled = true;
+        loadingIndicator.style.display = 'block';
+
+        try {
+            // 3. Send the POST request to your Flask API
+            const response = await fetch('/api/analyze', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ query: query })
+            });
+
+            const data = await response.json();
+
+            // 4. Show the Agent's response (or error)
+            if (data.error) {
+                appendMessage('agent', 'Error: ' + data.error);
+            } else {
+                appendMessage('agent', data.response);
+            }
+        } catch (error) {
+            appendMessage('agent', 'Network Error: Could not reach the server.');
+        } finally {
+            // 5. Re-enable the UI
+            sendBtn.disabled = false;
+            userInput.disabled = false;
+            loadingIndicator.style.display = 'none';
+            userInput.focus();
+        }
+    }
+
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            sendMessage();
+        }
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgentScope AI Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .metrics-card h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        
+        .metric-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 1em;
+        }
+        
+        .metric-label {
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .metric-value {
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        .chat-card h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        
+        .query-input-group {
+            margin-bottom: 20px;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1em;
+            resize: vertical;
+            min-height: 100px;
+            transition: border-color 0.3s;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .examples {
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+        
+        .examples-title {
+            color: #666;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .example-btn {
+            display: block;
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.3s;
+            font-size: 0.85em;
+        }
+        
+        .example-btn:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 12px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .response-section {
+            margin-top: 20px;
+        }
+        
+        .response-label {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .response-box {
+            background: #f9f9f9;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            border-radius: 8px;
+            min-height: 150px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-size: 0.95em;
+            line-height: 1.6;
+            color: #333;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            color: #667eea;
+            margin: 20px 0;
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error {
+            background: #fee;
+            border-left-color: #f44;
+            color: #c00;
+        }
+        
+        .success {
+            background: #efe;
+            border-left-color: #4f4;
+            color: #060;
+        }
+        
+        @media (max-width: 768px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 AgentScope AI Demo</h1>
+            <p class="subtitle">Intelligent business analysis powered by AI agents</p>
+        </header>
+        
+        <div class="main-grid">
+            <!-- Metrics Panel -->
+            <div class="card metrics-card">
+                <h2>📊 Business Metrics</h2>
+                <div id="metrics-container">
+                    <div style="text-align: center; color: #999;">
+                        Loading metrics...
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Chat Panel -->
+            <div class="card chat-card">
+                <h2>💬 AI Analysis</h2>
+                
+                <div class="query-input-group">
+                    <textarea id="query" placeholder="Ask the AI agent anything about your business..."></textarea>
+                    
+                    <div class="examples">
+                        <div class="examples-title">💡 Try these questions:</div>
+                        <div id="examples-container"></div>
+                    </div>
+                </div>
+                
+                <div class="button-group">
+                    <button onclick="sendQuery()">Analyze</button>
+                    <button onclick="clearChat()">Clear</button>
+                </div>
+                
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>Analyzing... Please wait</p>
+                </div>
+                
+                <div class="response-section" id="response-section" style="display: none;">
+                    <label class="response-label">Response:</label>
+                    <div class="response-box" id="response-box"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Load metrics on page load
+        window.addEventListener('load', loadMetrics);
+        window.addEventListener('load', loadExamples);
+        
+        // Load metrics
+        async function loadMetrics() {
+            try {
+                const response = await fetch('/api/metrics');
+                const data = await response.json();
+                
+                if (data.success) {
+                    const metrics = data.metrics;
+                    const html = `
+                        <div class="metric-item">
+                            <span class="metric-label">Daily Revenue</span>
+                            <span class="metric-value">${metrics.daily_revenue}</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Active Users</span>
+                            <span class="metric-value">${metrics.active_users}</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Churn Rate</span>
+                            <span class="metric-value">${metrics.churn_rate}</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Satisfaction</span>
+                            <span class="metric-value">${metrics.satisfaction_score}/10</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Support Queue</span>
+                            <span class="metric-value">${metrics.support_queue} tickets</span>
+                        </div>
+                        <div class="metric-item" style="border: none;">
+                            <span class="metric-label">Critical Tickets</span>
+                            <span class="metric-value">${data.tickets.critical}</span>
+                        </div>
+                    `;
+                    document.getElementById('metrics-container').innerHTML = html;
+                }
+            } catch (error) {
+                console.error('Error loading metrics:', error);
+            }
+        }
+        
+        // Load example queries
+        async function loadExamples() {
+            try {
+                const response = await fetch('/api/examples');
+                const data = await response.json();
+                
+                if (data.success) {
+                    const html = data.examples.map(ex => 
+                        `<button class="example-btn" onclick="setQuery('${ex.replace(/'/g, "\\'")}')">${ex}</button>`
+                    ).join('');
+                    document.getElementById('examples-container').innerHTML = html;
+                }
+            } catch (error) {
+                console.error('Error loading examples:', error);
+            }
+        }
+        
+        // Set query from example
+        function setQuery(query) {
+            document.getElementById('query').value = query;
+            document.getElementById('query').focus();
+        }
+        
+        // Send query
+        async function sendQuery() {
+            const query = document.getElementById('query').value.trim();
+            
+            if (!query) {
+                alert('Please enter a query');
+                return;
+            }
+            
+            showLoading(true);
+            
+            try {
+                const response = await fetch('/api/analyze', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ query })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showResponse(data.response, false);
+                } else {
+                    showResponse(`Error: ${data.error}`, true);
+                }
+            } catch (error) {
+                showResponse(`Error: ${error.message}`, true);
+            } finally {
+                showLoading(false);
+            }
+        }
+        
+        // Show loading
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'block' : 'none';
+        }
+        
+        // Show response
+        function showResponse(text, isError) {
+            const section = document.getElementById('response-section');
+            const box = document.getElementById('response-box');
+            
+            box.textContent = text;
+            box.className = isError ? 'response-box error' : 'response-box success';
+            section.style.display = 'block';
+        }
+        
+        // Clear chat
+        function clearChat() {
+            document.getElementById('query').value = '';
+            document.getElementById('response-section').style.display = 'none';
+            document.getElementById('query').focus();
+        }
+        
+        // Allow Enter key to send
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('query').addEventListener('keydown', function(e) {
+                if (e.ctrlKey && e.key === 'Enter') {
+                    sendQuery();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

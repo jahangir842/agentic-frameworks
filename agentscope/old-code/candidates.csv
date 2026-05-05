@@ -1,0 +1,45 @@
+name,position,experience,skills,status,salary_expectation
+John Smith,Senior Backend Engineer,8 years,"Python, Java, AWS, microservices",interviewed,$120k
+Sarah Johnson,Frontend Developer,5 years,"React, TypeScript, CSS, UX",pending,$95k
+Mike Chen,DevOps Engineer,6 years,"Kubernetes, Docker, CI/CD, Linux",offered,$115k
+Emily Davis,Product Manager,4 years,"Agile, roadmapping, analytics, communication",screening,$100k
+Alex Garcia,QA Engineer,3 years,"Automation, Selenium, Python, testing",interviewed,$75k
+Lisa Wang,UI/UX Designer,6 years,"Figma, prototyping, design systems, research",pending,$90k
+James Wilson,Data Scientist,7 years,"Python, SQL, ML, statistics, TensorFlow",interviewed,$130k
+Priya Patel,Junior Developer,1 year,"JavaScript, React, Node.js, learning",screening,$60k
+Robert Lee,System Architect,10 years,"Cloud architecture, AWS, scalability, design",offered,$140k
+Sofia Martinez,Security Engineer,5 years,"Cybersecurity, penetration testing, compliance",pending,$110k
+Marcus Johnson,Backend Engineer,6 years,"Java, Spring Boot, PostgreSQL, REST APIs",interviewed,$110k
+Jessica Chen,Frontend Developer,4 years,"Vue.js, JavaScript, HTML/CSS, responsive design",pending,$85k
+David Thompson,Mobile Developer,7 years,"React Native, iOS, Swift, Android",screening,$105k
+Anna Rodriguez,DevOps Engineer,5 years,"AWS, Jenkins, Terraform, monitoring",offered,$108k
+Chris Wilson,Full Stack Developer,3 years,"MERN stack, Node.js, MongoDB, Express",screening,$75k
+Nina Gupta,Data Analyst,2 years,"SQL, Python, Tableau, analytics",pending,$70k
+Patrick O'Brien,Senior QA Engineer,9 years,"Test automation, Selenium, JUnit, strategy",interviewed,$95k
+Rachel Klein,UI Designer,4 years,"Figma, prototyping, user research, accessibility",screening,$80k
+Victor Chen,Cloud Architect,8 years,"GCP, Kubernetes, microservices, scalability",offered,$135k
+Laura Martinez,Backend Engineer,5 years,"Python, Django, PostgreSQL, REST APIs",interviewed,$105k
+Thomas Anderson,Frontend Engineer,6 years,"React, Redux, TypeScript, performance",pending,$100k
+Olivia Brown,QA Automation,3 years,"Cypress, JavaScript, API testing, CI/CD",screening,$70k
+Kevin Park,DevOps Engineer,4 years,"Docker, Kubernetes, Ansible, AWS",pending,$110k
+Samantha Lee,Product Manager,3 years,"Roadmapping, user stories, analytics, agile",interviewed,$95k
+Daniel Martinez,Data Engineer,5 years,"Spark, Hadoop, Python, ETL pipelines",offered,$120k
+Amanda White,Security Engineer,6 years,"Network security, penetration testing, SIEM",screening,$115k
+Brandon Davis,Junior Backend Engineer,2 years,"Java, Spring, MySQL, learning backend",pending,$65k
+Megan Taylor,Frontend Developer,5 years,"Angular, TypeScript, responsive design, UX",interviewed,$92k
+Richard Harris,System Administrator,4 years,"Linux, networking, infrastructure, monitoring",screening,$78k
+Jessica Lee,Data Scientist,4 years,"Machine learning, Python, TensorFlow, statistics",pending,$115k
+Andrew Wilson,Mobile Developer,3 years,"Flutter, Dart, cross-platform, mobile UI",offered,$95k
+Stephanie Brown,UX Designer,5 years,"User research, wireframing, prototyping, testing",screening,$85k
+Nathan Johnson,Backend Engineer,7 years,"Go, gRPC, distributed systems, performance",interviewed,$125k
+Isabella Garcia,Frontend Developer,2 years,"React, CSS, JavaScript, responsive web design",pending,$75k
+Michael Chen,DevOps Specialist,3 years,"Kubernetes, CI/CD pipelines, container orchestration",screening,$105k
+Sophia Wilson,QA Engineer,5 years,"Manual testing, automation, bug tracking, reporting",interviewed,$78k
+Lucas Martinez,Junior Developer,1 year,"Python, JavaScript, HTML/CSS, web basics",pending,$55k
+Natasha Petrov,Senior QA Lead,8 years,"Test strategy, automation frameworks, mentoring",offered,$105k
+Oliver Stone,Cloud Engineer,4 years,"AWS, Lambda, S3, serverless architecture",screening,$100k
+Emma Thompson,Backend Developer,6 years,"Node.js, Express, MongoDB, REST APIs",interviewed,$110k
+Grace Lee,Frontend Specialist,3 years,"React, Next.js, performance optimization, SEO",pending,$90k
+Henry Zhang,Data Analyst,3 years,"SQL, Tableau, Excel, business intelligence",screening,$72k
+Victoria Brown,DevOps Engineer,5 years,"Container orchestration, infrastructure as code, AWS",interviewed,$112k
+William King,Security Analyst,2 years,"Vulnerability assessment, threat analysis, SOC",pending,$95k
